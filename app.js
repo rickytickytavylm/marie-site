@@ -8,8 +8,8 @@
 // ========================================
 
 const CONFIG = {
-    // 🌐 RunPod FastAPI endpoint
-    API_URL: 'https://t9hbq0d27rx2hx-8000.proxy.runpod.net/chat'
+    // 🌐 RunPod FastAPI endpoint (port 8888)
+    API_URL: 'https://t9hbq0d27rx2hx-8888.proxy.runpod.net/chat'
 };
 
 // ========================================
