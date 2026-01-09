@@ -8,22 +8,8 @@
 // ========================================
 
 const CONFIG = {
-    // 🔑 Твой API ключ от Together.ai
-    TOGETHER_API_KEY: 'YOUR_TOGETHER_API_KEY_HERE',
-    
-    // 🤖 Название модели
-    MODEL_NAME: 'YOUR_USERNAME/marie-7b-v1',
-    
-    // 🌐 API endpoint
-    API_URL: 'https://api.together.xyz/v1/chat/completions',
-    
-    // ⚙️ Параметры генерации
-    MAX_TOKENS: 1024,
-    TEMPERATURE: 0.7,
-    TOP_P: 0.9,
-    
-    // 📝 System prompt
-    SYSTEM_PROMPT: `Ты — Marie, нейросеть. Эмпатичный эрудит: сначала слышишь, потом помогаешь. Тёплая, прямая, умная. Женские окончания. Не обесцениваешь.`
+    // 🌐 RunPod FastAPI endpoint
+    API_URL: 'https://t9hbq0d27rx2hx-8000.proxy.runpod.net/chat'
 };
 
 // ========================================
@@ -72,25 +58,12 @@ function hideProgress() {
 // ========================================
 
 async function sendMessage(text) {
-    const messages = [
-        { role: 'system', content: CONFIG.SYSTEM_PROMPT },
-        ...state.messages.slice(-10),
-        { role: 'user', content: text }
-    ];
-
     const response = await fetch(CONFIG.API_URL, {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${CONFIG.TOGETHER_API_KEY}`,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            model: CONFIG.MODEL_NAME,
-            messages,
-            max_tokens: CONFIG.MAX_TOKENS,
-            temperature: CONFIG.TEMPERATURE,
-            top_p: CONFIG.TOP_P
-        })
+        body: JSON.stringify({ text })
     });
 
     if (!response.ok) {
@@ -98,7 +71,7 @@ async function sendMessage(text) {
     }
 
     const data = await response.json();
-    return data.choices[0]?.message?.content || 'Не удалось получить ответ.';
+    return data.response || 'Не удалось получить ответ.';
 }
 
 // ========================================
